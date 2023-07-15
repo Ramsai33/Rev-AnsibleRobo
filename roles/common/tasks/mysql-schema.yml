@@ -4,7 +4,7 @@
     state: installed
 
 - name: Schema_load
-  ansible.builtin.shell: mysql -h <MYSQL-SERVER-IPADDRESS> -uroot -p{{mysql_password}} < /app/schema/shipping.sql
+  ansible.builtin.shell: mysql -h msql-dev.ramdevops35.online -uroot -p{{mysql_password}} < /app/schema/shipping.sql
 
 - name: Restart service
   ansible.builtin.service:
