@@ -1,0 +1,21 @@
+- name: Install Maven
+  ansible.builtin.yum:
+    name: maven
+    state: Installed
+
+- name: AppPreReq
+  ansible.builtin.include_tasks: appprereq.yml
+
+- name: clean package
+  ansible.builtin.shell: mvn clean package ; mv target/shipping-1.0.jar shipping.jar
+  args:
+    chdir: /app
+
+- name: AppPreReq
+  ansible.builtin.include_tasks: systemd.yml
+
+
+
+
+
+
