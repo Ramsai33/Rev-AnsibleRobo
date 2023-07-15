@@ -29,7 +29,7 @@
 - name: Install Npm
   community.general.npm:
     path: /app
-    state: installed
+    state: latest
 
 - name: Copy file
   ansible.builtin.copy:
