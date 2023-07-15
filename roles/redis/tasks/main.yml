@@ -14,9 +14,13 @@
 
 - name: Change Ports
   ansible.builtin.replace:
-    path: /etc/mongod.conf
+    path: { { item } }
     regexp: '127.0.0.1'
     replace: '0.0.0.0'
+  loop:
+    - /etc/redis.conf
+    - /etc/redis/redis.conf
+
 
 - name: Start service Mongodb
   ansible.builtin.service:
