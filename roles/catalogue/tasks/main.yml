@@ -24,6 +24,7 @@
   ansible.builtin.unarchive:
     src: https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip
     dest: /app
+    remote_src: yes
 
 - name: Install Npm
   community.general.npm:
