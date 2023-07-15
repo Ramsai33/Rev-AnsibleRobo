@@ -22,7 +22,7 @@
 
 - name: Download and Extract
   ansible.builtin.unarchive:
-    src: https://roboshop-artifacts.s3.amazonaws.com/catalogue.zip
+    src: https://roboshop-artifacts.s3.amazonaws.com/{{component}}.zip
     dest: /app
     remote_src: yes
 
@@ -33,12 +33,12 @@
 
 - name: Copy file
   ansible.builtin.copy:
-    src: catalogue.service
-    dest: /etc/systemd/system/catalogue.service
+    src: "{{component}}.service"
+    dest: /etc/systemd/system/{{component}}.service
 
 - name: Daemon reload
   ansible.builtin.systemd:
-    name: catalogue
+    name: "{{component}}"
     daemon_reload: true
     enabled: true
     state: started
@@ -54,6 +54,6 @@
     state: installed
 
 - name: Load Schema
-  ansible.builtin.shell: mongo --host mongodb-dev.ramdevops35.online </app/schema/catalogue.js
+  ansible.builtin.shell: mongo --host mongodb-dev.ramdevops35.online </app/schema/{{component}}.js
 
 
