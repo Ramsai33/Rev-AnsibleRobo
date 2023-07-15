@@ -1,0 +1,57 @@
+#source common.sh
+#
+#print_head "Installing Nginx"
+#yum install nginx -y &>>${LOG}
+#status_check
+#
+#print_head "Starting Service"
+#systemctl enable nginx &>>${LOG}
+#systemctl start nginx &>>${LOG}
+#status_check
+#
+#
+#rm -rf /usr/share/nginx/html/* &>>${LOG}
+#
+#print_head "Downloading web content"
+#curl -o /tmp/frontend.zip https://roboshop-artifacts.s3.amazonaws.com/frontend.zip &>>${LOG}
+#status_check
+#
+#print_head "Extracting web content"
+#cd /usr/share/nginx/html &>>${LOG}
+#unzip /tmp/frontend.zip &>>${LOG}
+#status_check
+#
+#print_head "Configuring Reverse Proxy"
+#cp ${script_location}/files/nginx-roboshop.conf /etc/nginx/default.d/roboshop.conf &>>${LOG}
+#status_check
+
+- name: Install Nginx
+  ansible.builtin.yum:
+    name: nginx
+    state: installed
+
+- name: remove directory
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: absent
+
+- name: Create a directory
+  ansible.builtin.file:
+    path: /usr/share/nginx/html
+    state: directory
+
+- name: Unarchive a file that needs to be downloaded (added in 2.0)
+  ansible.builtin.unarchive:
+    src: https://roboshop-artifacts.s3.amazonaws.com/frontend.zip
+    dest: /usr/share/nginx/html
+
+- name: Copy file with owner and permissions
+  ansible.builtin.copy:
+    src: nginx.conf
+    dest: /etc/nginx/default.d/roboshop.conf
+
+name: Start service nginx
+  ansible.builtin.service:
+    name: nginx
+    state: started
+    enabled: yes
